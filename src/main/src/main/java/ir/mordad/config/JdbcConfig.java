@@ -83,10 +83,10 @@ public class JdbcConfig {
     @Bean("dataSource")
     public DataSource getDatasource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUsername(env.getProperty("jpa.username"));
-        dataSource.setPassword(env.getProperty("jpa.password"));
-        dataSource.setUrl(env.getProperty("jpa.url"));
-        dataSource.setDriverClassName(env.getProperty("jpa.driver"));
+        dataSource.setUsername(env.getProperty("jdbc.username"));
+        dataSource.setPassword(env.getProperty("jdbc.password"));
+        dataSource.setUrl(env.getProperty("jdbc.url"));
+        dataSource.setDriverClassName(env.getProperty("jdbc.driver"));
 //        System.out.println(" >>> MADE A DATASOURCE2 BABY");
         return dataSource;
     }

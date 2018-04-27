@@ -3,6 +3,7 @@ package ir.mordad.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -20,6 +21,8 @@ import java.util.Properties;
 //@ComponentScan(basePackages = "ir.mordad")
 @Profile("jpa")
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "ir.mordad.dao.data")
+// @EnableJpaRepositories is for DAOs from Spring data (the most khafanest)
 public class JpaConfig {
 
     @Autowired

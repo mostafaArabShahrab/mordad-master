@@ -1,5 +1,6 @@
 package ir.mordad.config;
 
+import ir.mordad.entity.SingletonJesus;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.*;
 
@@ -11,6 +12,11 @@ import org.springframework.context.annotation.*;
 @Configuration
 @ComponentScan(basePackages = "ir.mordad")
 public class AppConfig {
+
+    @Bean
+    public SingletonJesus getJesus(){
+        return SingletonJesus.getInstance();
+    }
 
 //    @Autowired
 //    private Environment env;
