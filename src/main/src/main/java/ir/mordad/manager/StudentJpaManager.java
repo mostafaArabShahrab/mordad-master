@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-/**
- * Created by Asus on 4/27/2018.
- */
 @Service("studentJpaManager")
 @Profile("jpa")
 @Transactional
@@ -21,11 +18,11 @@ public class StudentJpaManager {
     private StudentJpaDao studentJpaDao;
 
 
-    public void save(StudentEntity student) {
-        studentJpaDao.create(student);
+    public Integer save(StudentEntity student) {
+        return studentJpaDao.create(student);
     }
 
-    public StudentEntity load(int id){
+    public StudentEntity load(Integer id){
         return studentJpaDao.load(id);
     }
 
@@ -33,14 +30,13 @@ public class StudentJpaManager {
         return studentJpaDao.loadAll();
     }
 
-    public void delete(int id){
+    public void delete(Integer id){
         studentJpaDao.delete(id);
     }
 
     public void update(StudentEntity student){
         studentJpaDao.update(student);
     }
-
 
     public List<StudentEntity> searchByName(String name){
         return studentJpaDao.searchByName(name);

@@ -17,9 +17,20 @@ public class StudentEntity {
     @Id
     @Column(name = "STUDENT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column(name = "STUDENT_NAME", unique = true)
+    private Integer id;
+    @Column(name = "STUDENT_NAME")
     private String name;
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Column(name = "STUDENT_AGE")
+    private Integer age;
 
 //    First Attempt: (does not work)
 //    @Autowired
@@ -32,11 +43,7 @@ public class StudentEntity {
 //        setId(new Random().nextInt(100_000));
 //        setName("Kaaalim" + id);
 //        logger.info("new student entity born");
-//    }
-
-    public StudentEntity() {
-
-    }
+//   }
 
     public int getId() {
         return id;
@@ -52,5 +59,14 @@ public class StudentEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "StudentEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
 }

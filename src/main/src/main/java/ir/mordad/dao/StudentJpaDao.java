@@ -18,11 +18,11 @@ public class StudentJpaDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public StudentEntity load(int id){
+    public StudentEntity load(Integer id){
         return entityManager.find(StudentEntity.class, id);
     }
 
-    public int create(StudentEntity student){
+    public Integer create(StudentEntity student){
         entityManager.persist(student);
         return student.getId();
     }
@@ -31,7 +31,7 @@ public class StudentJpaDao {
         entityManager.merge(student);
     }
 
-    public void delete(int id){
+    public void delete(Integer id){
         entityManager.remove(load(id));
     }
 
