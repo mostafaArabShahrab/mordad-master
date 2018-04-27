@@ -4,10 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
-@PropertySource(value = "classpath:config.properties")
+@PropertySource(value = {"classpath:config.properties", "classpath:hibernate.properties"})
 @Configuration
 //@ComponentScan(basePackages = "ir.mordad")
 @Profile("jpa")
@@ -17,6 +24,38 @@ public class JpaConfig {
     // need it to read from properties
     private Environment env;
 
+    @Autowired
+    private DataSource dataSource;
+
+    @Bean
+    public JpaVendorAdapter jpaVendorAdapter(){
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        hibernateJpaVendorAdapter.setShowSql(true);
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
+        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
+        return hibernateJpaVendorAdapter;
+    }
+
+    @Bean
+    public PlatformTransactionManager transactionManager(){
+        return new JpaTransactionManager(managerFactoryBean().getObject());
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean managerFactoryBean(){
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+
+        LocalContainerEntityManagerFactoryBean managerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        managerFactoryBean.setDataSource(dataSource);
+        managerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
+        managerFactoryBean.setPackagesToScan("ir.mordad.entity");
+        managerFactoryBean.setPersistenceUnitName("chalakPersistenceUnit");
+        managerFactoryBean.setJpaProperties(properties);
+        return managerFactoryBean;
+    }
 
 //    @Bean(value = "studentDao",destroyMethod = "finalize")
 //    public StudentDao getStudentDao() {
