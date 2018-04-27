@@ -1,11 +1,13 @@
 package ir.mordad.entity;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Cascade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Random;
 
 //@Scope("prototype")
@@ -18,6 +20,7 @@ public class StudentEntity {
     @Column(name = "STUDENT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @Column(name = "STUDENT_NAME")
     private String name;
 
@@ -31,6 +34,29 @@ public class StudentEntity {
 
     @Column(name = "STUDENT_AGE")
     private Integer age;
+
+    public TeacherEntity getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TeacherEntity teacher) {
+        this.teacher = teacher;
+    }
+
+
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private TeacherEntity teacher;
+
+    public List<BookEntity> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<BookEntity> books) {
+        this.books = books;
+    }
+
+    @ManyToMany(mappedBy = "students", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private List<BookEntity> books;
 
 //    First Attempt: (does not work)
 //    @Autowired

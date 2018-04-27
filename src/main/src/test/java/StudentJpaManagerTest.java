@@ -1,5 +1,7 @@
 import ir.mordad.config.AppConfig;
+import ir.mordad.entity.BookEntity;
 import ir.mordad.entity.StudentEntity;
+import ir.mordad.entity.TeacherEntity;
 import ir.mordad.manager.StudentJpaManager;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,8 +14,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,11 +36,42 @@ public class StudentJpaManagerTest {
     public void Test_Create() {
         StudentJpaManager manager = applicationContext.getBean(StudentJpaManager.class);
         StudentEntity s = new StudentEntity();
-        s.setName("ramtin");
-        s.setAge(15);
+        s.setName("mostafa");
+        s.setAge(890);
         manager.save(s);
         Assert.assertNotNull(s.getId());
         Assert.assertNotNull(manager.load(s.getId()));
+    }
+
+    @Test
+    public void Test_CreateWithTeacher(){
+        StudentJpaManager manager = applicationContext.getBean(StudentJpaManager.class);
+        StudentEntity s = new StudentEntity();
+        s.setName("mostafa");
+        s.setAge(20);
+
+
+        TeacherEntity t = new TeacherEntity();
+        t.setName("darsanj");
+        s.setTeacher(t);
+
+        manager.save(s);
+    }
+
+    @Test
+    public void Test_CreatWithBooks(){
+        StudentJpaManager manager = applicationContext.getBean(StudentJpaManager.class);
+        StudentEntity s = new StudentEntity();
+        s.setName("mostafa");
+        s.setAge(20);
+
+        List<BookEntity> books = new ArrayList<>();
+        books.add(new BookEntity("Math"));
+        books.add(new BookEntity("DB"));
+        books.add(new BookEntity("Martin Flower"));
+
+        s.setBooks(books);
+        manager.save(s);
     }
 
     @Test
